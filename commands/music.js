@@ -9,13 +9,14 @@ module.exports.queues = {};
 
 module.exports.run = async (bot, message, args) => {
   let vcdisconnectErr;
-
+  let channel = message.channel;
+  
   try {
-    if (message.channel instanceof Discord.DMChannel) {
+    if (channel instanceof Discord.DMChannel) {
       const exampleEmbed2 = new Discord.RichEmbed()
         .setColor('#ff0000')
         .setTitle(`This command is not allowed in DMs`);
-      return await message.channel.send(exampleEmbed2);
+      return await channel.send(exampleEmbed2);
     }
     
     timeoutIDs[message.guild.id] = undefined;
@@ -25,7 +26,7 @@ module.exports.run = async (bot, message, args) => {
         const exampleEmbed2 = new Discord.RichEmbed()
                 .setColor('#ff0000')
                 .setTitle(`Invalid command structure.`);
-        return await message.channel.send(exampleEmbed2); 
+        return await channel.send(exampleEmbed2); 
     }
     
     const voiceChannel = message.member.voiceChannel;
@@ -36,14 +37,14 @@ module.exports.run = async (bot, message, args) => {
                 .setColor('#ff0000')
                 .setTitle(`Join a voice channel`)
                 .setDescription("to use this command");
-        return await message.channel.send(exampleEmbed2); 
+        return await channel.send(exampleEmbed2); 
     }
     else if (message.guild.voiceConnection && message.guild.voiceConnection.channel !== voiceChannel) {
         const exampleEmbed2 = new Discord.RichEmbed()
                 .setColor('#ff0000')
                 .setTitle(`The bot is already in a voice channel`)
                 .setDescription("join it to use this command");
-        return await message.channel.send(exampleEmbed2); 
+        return await channel.send(exampleEmbed2); 
     }
     
     const connection = await voiceChannel.join();
@@ -55,7 +56,7 @@ module.exports.run = async (bot, message, args) => {
         const exampleEmbed2 = new Discord.RichEmbed()
                 .setColor('#A3A6E8')
                 .setTitle(`Queued!`);
-        await message.channel.send(exampleEmbed2);
+        await channel.send(exampleEmbed2);
 
         return;
     }
@@ -85,14 +86,13 @@ module.exports.run = async (bot, message, args) => {
                 .setColor('#A3A6E8')
                 .setTitle(`Now Playing:`)
                 .setDescription(video.videoDetails && video.videoDetails.title || video.title);
-            await message.channel.send(exampleEmbed2);
+            await channel.send(exampleEmbed2);
             
             bot.on("message", async (m) => {
               if (m.guild.id != message.guild.id) return;
               else if (m.content === `${botSettings.prefix}skip`) {
-                let wait = await m.reply("Skipping...");
+                channel = m.channel;
                 await stream.end();
-                await wait.delete();
               }
             });
             
@@ -106,7 +106,7 @@ module.exports.run = async (bot, message, args) => {
                     .setColor('#A3A6E8')
                     .setTitle(`End of queue`)
                     .setDescription("bot will disconnect after 1 minute of inactivity");
-                  await message.channel.send(exampleEmbed2);
+                  await channel.send(exampleEmbed2);
                   
                   timeoutIDs[message.guild.id] = setTimeout(() => {
                     voiceChannel.leave();
@@ -123,7 +123,7 @@ module.exports.run = async (bot, message, args) => {
             const exampleEmbed2 = new Discord.RichEmbed()
                 .setColor('#ff0000')
                 .setTitle(`Video not found.`)
-            await message.channel.send(exampleEmbed2);
+            await channel.send(exampleEmbed2);
             
             module.exports.queues[message.guild.id].shift();
             if (module.exports.queues[message.guild.id].length === 0) {
@@ -132,7 +132,7 @@ module.exports.run = async (bot, message, args) => {
                 .setColor('#A3A6E8')
                 .setTitle(`End of queue`)
                 .setDescription("bot will disconnect after 1 minute of inactivity");
-              await message.channel.send(exampleEmbed2);
+              await channel.send(exampleEmbed2);
 
               timeoutIDs[message.guild.id] = setTimeout(() => {
                 voiceChannel.leave();
@@ -153,7 +153,7 @@ module.exports.run = async (bot, message, args) => {
         .setColor('#ff0000')
         .setTitle(`Aborted.`)
     vcdisconnectErr.leave();
-    return await message.channel.send(exampleEmbed2); 
+    return await channel.send(exampleEmbed2); 
   }
 }
 
