@@ -5,13 +5,12 @@
   "engines": {
     "node": "12.x"
   },
-  "name": "Aaronbot",
+  "name": "Scandium",
   "version": "0.0.1",
   "description": "uh",
   "main": "bot.js",
-  "author": "Aaron",
+  "author": "Aaron Xiong",
   "dependencies": {
-    "ffmpeg-binaries": "^4.0.0",
     "ffmpeg": "^0.0.4",
     "yt-search": "^2.5.0",
     "ytdl-core": "^4.1.1",
