@@ -90,7 +90,9 @@ module.exports.run = async (bot, message, args) => {
             bot.on("message", async (m) => {
               if (m.guild.id != message.guild.id) return;
               else if (m.content === `${botSettings.prefix}skip`) {
-                stream.end();
+                let wait = await m.reply("Skipping...");
+                await stream.end();
+                await wait.delete();
               }
             });
             
