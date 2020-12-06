@@ -33,7 +33,7 @@ fs.readdir("./commands/", (err, files) => {
 });
 
 bot.on("ready", async () => {
-	bot.user.setActivity("https://scandium.glitch.me/");
+	bot.user.setActivity("https://scandium.herokuapp.com/");
   
   /*let maintain = setInterval(async () => {
         try {
