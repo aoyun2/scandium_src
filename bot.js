@@ -35,7 +35,7 @@ fs.readdir("./commands/", (err, files) => {
 bot.on("ready", async () => {
 	bot.user.setActivity("https://scandium.glitch.me/");
   
-  let maintain = setInterval(async () => {
+  /*let maintain = setInterval(async () => {
         try {
             const browser = await puppeteer.launch({args: [
               '--no-sandbox',
