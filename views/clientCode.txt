@@ -1,0 +1,124 @@
+const socket = io();
+const server = "#{ser}";
+const channel = document.querySelector('body > select[id="chn"]');
+const pass = document.querySelector('body > input[id="pass"]');
+const dropdown = document.querySelector("body > select"); 
+const messages = document.querySelector('body > div[id="msgcn"]');
+const messageContainer = document.querySelector('body > textarea[id="msgin"]');
+const idContainer = "#{id}";
+let clientID;
+
+socket.on('id', (id) => {
+  if(!clientID) {
+    document.querySelector('body > small').textContent = id; 
+    clientID = id;
+    updateArr();
+    loadMsgs();
+    messages.focus();
+  }
+});
+
+socket.on('messagePackage', (data) => {
+    if (data.channel !== channel.value) return;
+    while (messages.firstChild) {
+        messages.removeChild(messages.firstChild);
+    }
+
+    for(x of data.messages) {
+      let p = document.createElement("p");
+      p.innerText = x[0];
+      p.style.class = "text";
+      messages.appendChild(p);
+
+      if (!x[1]) break;
+
+      if ((x[1].length > 0)) {
+        for(y of x[1]) {
+          const blob = new Blob([y[1]], {type:y[0]});
+          console.log(blob, y[0])
+          const url = URL.createObjectURL(blob);
+          console.log(url);
+          switch((y[0].split('/'))[0]) {
+            case "image":
+              let myImage = document.createElement("img");
+              myImage.src = url;
+              myImage.style.border = "1px dotted black";
+              myImage.style.borderRadius = "10px";
+              let link = document.createElement("a");
+              link.style.fontSize = "15px";
+              link.setAttribute("href", url);
+              link.innerText = "[Click to view original image]"
+              link.target = "_blank"
+              messages.appendChild(myImage);
+              messages.appendChild(document.createElement("br"));
+              messages.appendChild(link);
+              break;
+            case "video":
+              let myVideo = document.createElement("a");
+              myVideo.setAttribute("href", url);
+              myVideo.innerText = "[Click to view video]"
+              myVideo.style.fontWeight = "bold";
+              myVideo.target = "_blank"
+              messages.appendChild(myVideo);
+              break;
+          }
+        }
+      }
+    }
+
+    messages.scrollTop = messages.scrollHeight;
+    updateHeader();
+});
+
+function loadMsgs() {
+  const data = {
+    server: server,
+    channel: channel.value
+  }
+  while (messages.firstChild) {
+      messages.removeChild(messages.firstChild);
+  }
+  let loading = document.createElement("img");
+  loading.src = "https://i.stack.imgur.com/hzk6C.gif";
+  messages.appendChild(loading);
+  socket.emit('loadMsgs', data);
+}
+
+function updateHeader() {
+  document.querySelector('body > h2').textContent = `Messages: ${server} > ${channel.value}`;
+}
+
+function updateArr() {
+  const c = channel.value;
+  const s = server;
+
+  const data = {
+    channel: c,
+    server: s,
+    ID: clientID
+  }
+
+  oldC = c;
+
+  socket.emit('updateArr', data);
+  loadMsgs();
+}    
+
+function sendMsg() {
+  const data = {
+    content: messageContainer.value,
+    server: server,
+    channel: channel.value,
+    userID: idContainer
+  }
+
+  socket.emit('sendMessage', data);
+
+  messageContainer.value = '';
+}
+
+window.addEventListener("beforeunload", function(evt) {
+    oldC = channel.value;
+    channel.value = "";
+    updateArr();
+});
