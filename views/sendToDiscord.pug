@@ -1,0 +1,163 @@
+html
+  head          
+    script.
+      let isChromium = window.chrome;
+      let winNav = window.navigator;
+      let vendorName = winNav.vendor;
+      let isOpera = typeof window.opr !== "undefined";
+      let isIEedge = winNav.userAgent.indexOf("Edge") > -1;
+      let isIOSChrome = winNav.userAgent.match("CriOS");
+
+      if(!(
+        isChromium !== null &&
+        typeof isChromium !== "undefined" &&
+        vendorName === "Google Inc." &&
+        isOpera === false &&
+        isIEedge === false
+      )) {
+        alert("As of now, we only fully support Chrome. As a result, this website may not work as well.");
+      } 
+      if (location.protocol !== 'https:') {location.replace(`https:${location.href.substring(location.protocol.length)}`)}
+    title="Scandium"
+    link(rel="icon", type="image/png", href="https://cdn.glitch.com/3ebdc662-0a1e-4e5b-a129-4e6528173744%2Fsc-213674.webp?v=1605487166515")
+    style(type='text/css').  
+       html, body {
+          height: 100%;
+       } 
+       html {
+          display: table;
+          margin: auto;
+       }
+       body {
+           display: table-cell;
+           vertical-align: middle;
+           background:url('https://cdn.glitch.com/3ebdc662-0a1e-4e5b-a129-4e6528173744%2F459723.jpg?v=1605538993879') no-repeat fixed center;
+           background-size: 100% 100% ;
+           overflow:auto;
+       }
+       .text {
+           color: white;
+           font-family: Arial, Helvetica, sans-serif;
+       }
+       input {
+          border-bottom: 3px solid white;
+          border-left: 0px;
+          border-right: 0px;
+          border-top: 0px;
+          color: white;
+          background: transparent;
+          font-family: Arial, Helvetica, sans-serif;
+          outline:none;
+       }
+       input:-webkit-autofill,
+       input:-webkit-autofill:hover,
+       input:-webkit-autofill:focus,
+       input:-webkit-autofill:active {
+          -webkit-text-fill-color: darkgray;
+          transition: background-color 5000s ease-in-out 0s;
+       }
+       #fader {
+          background: black;
+          pointer-events: none;
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          z-index: 999999;
+          -webkit-animation-duration: 500ms;
+          -webkit-animation-timing-function: ease-in-out;
+       }
+       #fader.fade-out {
+          opacity: 0;
+          -webkit-animation-name: fade-out;
+       }
+       #fader.fade-in {
+          opacity: 1;
+          -webkit-animation-name: fade-in;
+       }
+       .hoverable {
+         transition: transform .2s; 
+         margin: 0 auto;
+       }
+       .hoverable:hover {
+         transform: scale(1.2); 
+       }
+       .errorShake {
+          position: relative;
+          -webkit-animation: shake .43s linear;
+       }
+       @-webkit-keyframes fade-out {
+          0% { opacity: 1 }
+          100% { opacity: 0 }
+       }
+       @-webkit-keyframes fade-in {
+          0% { opacity: 0 }
+          100% { opacity: 1 }
+       }
+       @-webkit-keyframes shake {
+          0% {
+              left:-10px;
+          }
+          16% {
+              left:9px;
+          }
+          33% {
+              left:-6px;
+          }
+          50% {
+              left:5px;
+          }
+          66% {
+              left:-2px;
+          }
+          83% {
+              left:1px;
+          }
+          100% {
+              left: 0px;
+          }
+       }
+  body          
+    svg(id="fader", class="fade-out")
+    script(src="/socket.io/socket.io.js")
+    
+    form(action="/connect",method="post")
+      p(class="text") Username: 
+      input(type='text', name='user')
+      p(class="text") Server: 
+      input(type='text', name='serv')
+      p(class="text") Password: 
+      input(type='password', name='pass')
+      p
+      input(type="button", class="hoverable", onclick="verifyUser()", value="Login")
+      p
+      text(class="text", style="font-size:10px") Register your server 
+      a(href="https://discordapp.com/oauth2/authorize?client_id=737402786085601342&permissions=8&scope=bot", target="_blank", class="text", style="background:rgba(163,166,232,0.5);font-size:10px") here
+    
+    script.
+      const form = document.querySelector('body > form');
+      const fader = document.querySelector('body > svg');
+      const server = document.querySelector('body > form > input[name="serv"]');
+      const username = document.querySelector('body > form > input[name="user"]');
+      const pass = document.querySelector('body > form > input[name="pass"]');
+      const socket = io();
+      
+      function verifyUser() {
+        socket.emit("verifyUser", [server.value, username.value, pass.value]);
+      }
+      
+      socket.on("verifyFail", () => {
+        form.classList.add("errorShake");
+      });
+      
+      socket.on("verifySuccess", () => {
+        fader.classList.add("fade-in");
+        form.submit();
+      });
+      
+      form.addEventListener("webkitAnimationEnd", (e) => {
+          e.target.classList.remove("errorShake");
+      });
+      
+      

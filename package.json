@@ -1,0 +1,39 @@
+{
+  "scripts": {
+    "start": "node bot.js"
+  },
+  "engines": {
+    "node": "12.x"
+  },
+  "name": "Aaronbot",
+  "version": "0.0.1",
+  "description": "uh",
+  "main": "bot.js",
+  "author": "Aaron",
+  "dependencies": {
+    "yt-search": "^2.5.0",
+    "ytdl-core": "^4.1.1",
+    "ytdl-core-discord": "^1.2.4",
+    "socket.io": "^3.0.3",
+    "uuid": "^8.3.1",
+    "cleverbot-free": "^1.0.4",
+    "compressorjs": "^1.0.6",
+    "canvas":"^2.6.1", 
+    "pug":"^3.0.0",
+    "serve-favicon": "^2.5.0",
+    "image-size":"^0.9.3",
+    "discord.js": "^11.4.2",
+    "filereader": "^0.10.3",
+    "@discordjs/opus": "^0.3.3",
+    "discord-ytdl-core": "^5.0.0",
+    "fetch-base64": "^2.1.2",
+    "express": "^4.17.1",
+    "javascript-obfuscator": "^2.6.2",
+    "jimp": "^0.16.1",
+    "jquery": "^3.5.1",
+    "jsdom-no-contextify": "^3.1.0",
+    "puppeteer": "^5.2.1",
+    "random-puppy": "^1.1.0",
+    "request": "^2.88.2"
+  }
+}
