@@ -225,7 +225,7 @@ html
               p.classList.add("text");
               p.style.color = "rgb(163,166,232)";
               messages.appendChild(p);
-              loadMoreSpinner.remove();
+              if (loadMoreSpinner) loadMoreSpinner.remove();
               loadMoreButton.remove();
               return;
           }
