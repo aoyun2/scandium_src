@@ -20,8 +20,8 @@ module.exports.run = async (bot, message, args) => {
       return await channel.send(exampleEmbed2);
     }
     
-    timeoutIDs[message.guild.id] = undefined;
     if (timeoutIDs[message.guild.id]) clearTimeout(timeoutIDs[message.guild.id]);
+    timeoutIDs[message.guild.id] = undefined;
     
     if (!args || args.length !== 1) {
         const exampleEmbed2 = new Discord.RichEmbed()
