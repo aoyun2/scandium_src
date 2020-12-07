@@ -111,7 +111,7 @@ module.exports.run = async (bot, message, args) => {
                     .setDescription("bot will disconnect after 1 minute of inactivity");
                   await channel.send(exampleEmbed2);
                   
-                  timeoutIDs[message.guild.id] = setTimeout(() => {
+                  timeoutIDs[message.guild.id] = setTimeout(async () => {
                       const exampleEmbed2 = new Discord.RichEmbed()
                       .setColor('#ff0000')
                       .setTitle(`Disconnected:`)
