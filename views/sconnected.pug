@@ -220,9 +220,13 @@ html
 
           if(data.messages.length <= 0) {
               let p = document.createElement("p");
-              p.innerText = "No messages yet, be the first to send one!";
+              p.innerText = "This is the start of the channel!";
+              p.style.fontWeight = "bold";
               p.classList.add("text");
+              p.style.color = "rgb(163,166,232)";
               messages.appendChild(p);
+              loadMoreSpinner.remove();
+              loadMoreButton.remove();
               return;
           }
 
