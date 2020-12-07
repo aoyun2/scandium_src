@@ -112,7 +112,12 @@ module.exports.run = async (bot, message, args) => {
                   await channel.send(exampleEmbed2);
                   
                   timeoutIDs[message.guild.id] = setTimeout(() => {
-                    voiceChannel.leave();
+                      const exampleEmbed2 = new Discord.RichEmbed()
+                      .setColor('#ff0000')
+                      .setTitle(`Disconnected:`)
+                      .setDescription("Bot inactive for too long.");
+                      return await channel.send(exampleEmbed2); 
+                      await voiceChannel.leave();
                   }, 60 * 1000)
                   return;
                 } else {
