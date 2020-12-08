@@ -92,7 +92,8 @@ module.exports.run = async (bot, message, args) => {
             
             bot.on("message", async (m) => {
               if (m.guild.id != message.guild.id) return;
-              else if (m.content === `${botSettings.prefix}skip` && (!debounce)) {
+              else if (m.content === `${botSettings.prefix}skip`) {
+                if (debounce) return;
                 debounce = true;
                 channel = m.channel;
                 skipmsg = await m.reply("Please wait...");
