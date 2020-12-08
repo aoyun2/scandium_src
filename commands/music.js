@@ -11,6 +11,7 @@ module.exports.run = async (bot, message, args) => {
   let vcdisconnectErr;
   let channel = message.channel;
   let skipmsg;
+  let debounce = false;
   
   try {
     if (channel instanceof Discord.DMChannel) {
@@ -91,7 +92,8 @@ module.exports.run = async (bot, message, args) => {
             
             bot.on("message", async (m) => {
               if (m.guild.id != message.guild.id) return;
-              else if (m.content === `${botSettings.prefix}skip`) {
+              else if (m.content === `${botSettings.prefix}skip` && (!debounce)) {
+                debounce = true;
                 channel = m.channel;
                 skipmsg = await m.reply("Please wait...");
                 await stream.end();
@@ -102,6 +104,7 @@ module.exports.run = async (bot, message, args) => {
               try {
                 module.exports.queues[message.guild.id].shift();
                 if (skipmsg && skipmsg.delete) {skipmsg.delete(); skipmsg = undefined;}
+                debounce = false;
                 
                 if (module.exports.queues[message.guild.id].length === 0) {
                   module.exports.queues[message.guild.id] = undefined;
