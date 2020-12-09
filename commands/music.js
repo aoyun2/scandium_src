@@ -92,7 +92,6 @@ module.exports.run = async (bot, message, args) => {
             bot.on("message", async (m) => {
               if (m.guild.id != message.guild.id) return;
               else if (m.content === `${botSettings.prefix}skip`) {
-                debounce = true;
                 channel = m.channel;
                 if (skipmsg === undefined) {skipmsg = await m.reply("Please wait...");}
                 await stream.end();
@@ -102,7 +101,7 @@ module.exports.run = async (bot, message, args) => {
             dispatcher.on("end", async end => {
               try {
                 module.exports.queues[message.guild.id].shift();
-                if (skipmsg && skipmsg.delete) {skipmsg.delete(); skipmsg = undefined;}
+                if (skipmsg) {skipmsg.delete(); skipmsg = undefined;}
                 
                 if (module.exports.queues[message.guild.id].length === 0) {
                   module.exports.queues[message.guild.id] = undefined;
