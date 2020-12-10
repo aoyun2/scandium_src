@@ -101,7 +101,7 @@ module.exports.run = async (bot, message, args) => {
             dispatcher.on("end", async end => {
               try {
                 module.exports.queues[message.guild.id].shift();
-                if (skipmsg) {skipmsg.delete(); skipmsg = undefined;}
+                if (skipmsg) {await skipmsg.delete(); skipmsg = undefined;}
                 
                 if (module.exports.queues[message.guild.id].length === 0) {
                   module.exports.queues[message.guild.id] = undefined;
