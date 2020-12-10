@@ -90,7 +90,6 @@ module.exports.run = async (bot, message, args) => {
             
             bot.on("message", async (m) => {
               if (m.guild.id != message.guild.id) return;
-              else if (skipmsg) return;
               else if (m.content === `${botSettings.prefix}skip`) {
                 channel = m.channel;
                 await m.react(":white_check_mark:");
