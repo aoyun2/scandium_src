@@ -10,7 +10,6 @@ module.exports.queues = {};
 module.exports.run = async (bot, message, args) => {
   let vcdisconnectErr;
   let channel = message.channel;
-  let skipmsg = undefined;
   
   try {
     if (channel instanceof Discord.DMChannel) {
@@ -94,7 +93,7 @@ module.exports.run = async (bot, message, args) => {
               else if (skipmsg) return;
               else if (m.content === `${botSettings.prefix}skip`) {
                 channel = m.channel;
-                if (skipmsg === undefined) {skipmsg = await m.reply("Please wait...");}
+                await m.react(":white_check_mark:");
                 await stream.end();
               }
             });
@@ -102,7 +101,6 @@ module.exports.run = async (bot, message, args) => {
             dispatcher.on("end", async end => {
               try {
                 module.exports.queues[message.guild.id].shift();
-                if (skipmsg !== undefined) {await skipmsg.delete(); skipmsg = undefined;}
                 
                 if (module.exports.queues[message.guild.id].length === 0) {
                   module.exports.queues[message.guild.id] = undefined;
