@@ -89,19 +89,20 @@ module.exports.run = async (bot, message, args) => {
                 .setDescription(video.videoDetails && video.videoDetails.title || video.title);
             await channel.send(exampleEmbed2);
             
-            bot.on("message", (m) => {
+            bot.on("message", async (m) => {
               if (m.guild.id != message.guild.id) return;
               else if (m.content === `${botSettings.prefix}skip`) {
+                if (!skipmsg) skipmsg = "defined";
                 channel = m.channel;
-                if (skipmsg === undefined) {skipmsg = m.reply("Please wait...");}
-                stream.end();
+                if (skipmsg === undefined) {skipmsg = await m.reply("Please wait...");}
+                await stream.end();
               }
             });
             
             dispatcher.on("end", async end => {
               try {
                 module.exports.queues[message.guild.id].shift();
-                if (skipmsg) {await skipmsg.delete(); skipmsg = undefined;}
+                if (skipmsg !== undefined) {await skipmsg.delete(); skipmsg = undefined;}
                 
                 if (module.exports.queues[message.guild.id].length === 0) {
                   module.exports.queues[message.guild.id] = undefined;
