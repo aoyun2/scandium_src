@@ -91,8 +91,8 @@ module.exports.run = async (bot, message, args) => {
             
             bot.on("message", async (m) => {
               if (m.guild.id != message.guild.id) return;
+              else if (skipmsg) return;
               else if (m.content === `${botSettings.prefix}skip`) {
-                if (!skipmsg) skipmsg = "defined";
                 channel = m.channel;
                 if (skipmsg === undefined) {skipmsg = await m.reply("Please wait...");}
                 await stream.end();
