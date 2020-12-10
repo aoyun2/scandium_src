@@ -92,7 +92,7 @@ module.exports.run = async (bot, message, args) => {
               if (m.guild.id != message.guild.id) return;
               else if (m.content === `${botSettings.prefix}skip`) {
                 channel = m.channel;
-                await m.react(":white_check_mark:");
+                await m.react("786434990988197899");
                 await stream.end();
               }
             });
