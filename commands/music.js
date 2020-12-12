@@ -93,7 +93,7 @@ module.exports.run = async (bot, message, args) => {
               else if (m.content === `${botSettings.prefix}skip`) {
                 channel = m.channel;
                 await m.react("👍");
-                await stream.end();
+                await dispatcher.destroy();
               }
             });
             
