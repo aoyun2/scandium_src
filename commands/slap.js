@@ -70,7 +70,7 @@ module.exports.run = async (bot,message,args) => {
     }
     else if(person.id === message.author.id)
     {
-	    await message.channel.send(`Don't slap yourself...`);
+	    await message.channel.send(`Cannot slap yourself.`);
 	    return; 
     }
 
