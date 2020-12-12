@@ -70,6 +70,7 @@ bot.on('voiceStateUpdate', async (old, newm) => {
     let oldUserChannel = old.voiceChannel;
     if (oldUserChannel && oldUserChannel.members.array().length === 1) {
         (await bot.commands.get("play")).queues[oldUserChannel.guild.id] = undefined;
+	(await bot.commands.get("play")).timeoutIDs[oldUserChannel.guild.id] = undefined
         oldUserChannel.leave();
     }
 })
