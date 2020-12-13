@@ -4,7 +4,7 @@ const ytdl2 = require('ytdl-core');
 const yts = require("yt-search");
 const botSettings = require("../botsettings.json");
 
-let timeoutIDs = {};
+module.exports.timeoutIDs = {};
 module.exports.queues = {};
 
 module.exports.run = async (bot, message, args) => {
@@ -20,6 +20,7 @@ module.exports.run = async (bot, message, args) => {
     }
     
     if (timeoutIDs[message.guild.id]) clearTimeout(timeoutIDs[message.guild.id]);
+    timeoutIDs[message.guild.id] = undefined;
     
     if (!args || args.length !== 1) {
         const exampleEmbed2 = new Discord.RichEmbed()
