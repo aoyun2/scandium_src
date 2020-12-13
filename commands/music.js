@@ -19,8 +19,8 @@ module.exports.run = async (bot, message, args) => {
       return await channel.send(exampleEmbed2);
     }
     
-    if (timeoutIDs[message.guild.id]) clearTimeout(timeoutIDs[message.guild.id]);
-    timeoutIDs[message.guild.id] = undefined;
+    if (module.exports.timeoutIDs[message.guild.id]) clearTimeout(module.exports.timeoutIDs[message.guild.id]);
+    module.exports.timeoutIDs[message.guild.id] = undefined;
     
     if (!args || args.length !== 1) {
         const exampleEmbed2 = new Discord.RichEmbed()
@@ -108,7 +108,7 @@ module.exports.run = async (bot, message, args) => {
                     .setDescription("bot will disconnect after 1 minute of inactivity");
                   await channel.send(exampleEmbed2);
                   
-                  timeoutIDs[message.guild.id] = setTimeout(async () => {
+                  module.exports.timeoutIDs[message.guild.id] = setTimeout(async () => {
                       await voiceChannel.leave();
                       const exampleEmbed2 = new Discord.RichEmbed()
                       .setColor('#ff0000')
@@ -139,7 +139,7 @@ module.exports.run = async (bot, message, args) => {
                 .setDescription("bot will disconnect after 1 minute of inactivity");
               await channel.send(exampleEmbed2);
 
-              timeoutIDs[message.guild.id] = setTimeout(async () => {
+              module.exports.timeoutIDs[message.guild.id] = setTimeout(async () => {
                 await voiceChannel.leave();
                 const exampleEmbed2 = new Discord.RichEmbed()
                 .setColor('#ff0000')
