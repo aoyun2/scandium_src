@@ -20,7 +20,7 @@ module.exports.run = async (bot, message, args) => {
     }
     
     if (module.exports.timeoutIDs[message.guild.id]) clearTimeout(module.exports.timeoutIDs[message.guild.id]);
-    module.exports.timeoutIDs[message.guild.id] = undefined;
+    //module.exports.timeoutIDs[message.guild.id] = undefined;
     
     if (!args || args.length !== 1) {
         const exampleEmbed2 = new Discord.RichEmbed()
