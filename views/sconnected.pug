@@ -12,6 +12,9 @@ html
            margin-top: 2%;
            margin-left: 10%;
        }
+       span + span {
+           margin-left: 10px;
+       }
        .text {
            color: white;
            font-family: "Muli";
@@ -163,6 +166,9 @@ html
     input(type="button", onclick='back()', value="Log out", class="input hoverable")
     h1(class="text")=welcome
     h2(class="text")
+    span
+    span
+    button(onclick="loadMsgs()", class="input hoverable") Reload messages
     p
     div(id="msgcn", class="scrollable", style="")
     p
