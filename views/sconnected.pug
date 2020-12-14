@@ -193,11 +193,11 @@ html
       script.
         const socket = io();
         const server = "#{ser}";
-        const channel = document.querySelector('body > select[id="chn"]');
-        const pass = document.querySelector('body > input[id="pass"]');
-        const dropdown = document.querySelector("body > select"); 
-        const messages = document.querySelector('body > div[id="msgcn"]');
-        const messageContainer = document.querySelector('body > textarea[id="msgin"]');
+        const channel = document.querySelector('body > div > select[id="chn"]');
+        const pass = document.querySelector('body > div > input[id="pass"]');
+        const dropdown = document.querySelector("body > div > select"); 
+        const messages = document.querySelector('body > div > div[id="msgcn"]');
+        const messageContainer = document.querySelector('body > div > textarea[id="msgin"]');
         const idContainer = "#{id}";
         let progressbar;
         let loadMoreButton;
@@ -391,7 +391,7 @@ html
         }
 
         function updateHeader() {
-          document.querySelector('body > text').textContent = `Messages: ${server} > ${channel.value}`;
+          document.querySelector('body > div > text').textContent = `Messages: ${server} > ${channel.value}`;
         }
 
         function updateArr() {
