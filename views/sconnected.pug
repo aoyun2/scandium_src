@@ -8,11 +8,17 @@ html
        html, body {
            background:url('https://cdn.glitch.com/3ebdc662-0a1e-4e5b-a129-4e6528173744%2F459723.jpg?v=1605538993879') no-repeat fixed center;
            background-size: 100% 100%;
-           height: 100vh;
-           width: 100vw
        }
        body {
-           margin-left: 10%;
+          position: absolute;
+          margin: 0px;
+          overflow: hidden;
+          top: 0px;
+          bottom: 0px;
+          width: 100%;
+       }
+       #content {
+       
        }
        span + span {
            margin-left: 20px;
@@ -162,278 +168,279 @@ html
       };
       window.addEventListener('storage', onLocalStorageEvent, false);
       
-    input(type="button", onclick='back()', value="Log out", class="input hoverable")
-    h1(class="text", style="color:rgb(163,166,232);")=welcome
-    text(class="text", style="color:rgb(163,166,232);")
-    span
-    span
-    button(onclick="loadMsgs()", class="input hoverable") Reload messages
-    p
-    div(id="msgcn", class="scrollable", style="")
-    p
-    p(class="text") Channel:
-    select(id='chn', onchange="updateArr(); updateHeader()", class="input hoverable")
-      each chn in chns
-        option(value=chn) #{chn}
-    p
-    textarea(id="msgin", class="input", rows=5, cols=50, placeholder="Type a message here", style="padding-left:7px;border-left:2px solid rgb(163,166,232);border-top: transparent;color: rgb(163,166,232);border-right: transparent;border-bottom: transparent; background: transparent;")
-    
-    button(onclick="sendMsg()", class="send-button hoverable", style="outline:none; border:0px; background:transparent;")
-      img(src="https://cdn.glitch.com/3ebdc662-0a1e-4e5b-a129-4e6528173744%2F3ebdc662-0a1e-4e5b-a129-4e6528173744%252Fsend-message-icon-png-10.png?v=1606765543624")
-    p
-    script(src="/socket.io/socket.io.js")
-    
-    script.
-      const socket = io();
-      const server = "#{ser}";
-      const channel = document.querySelector('body > select[id="chn"]');
-      const pass = document.querySelector('body > input[id="pass"]');
-      const dropdown = document.querySelector("body > select"); 
-      const messages = document.querySelector('body > div[id="msgcn"]');
-      const messageContainer = document.querySelector('body > textarea[id="msgin"]');
-      const idContainer = "#{id}";
-      let progressbar;
-      let loadMoreButton;
-      let loadMoreSpinner;
-      let clientID;
+    div(id="content")  
+      input(type="button", onclick='back()', value="Log out", class="input hoverable")
+      h1(class="text", style="color:rgb(163,166,232);")=welcome
+      text(class="text", style="color:rgb(163,166,232);")
+      span
+      span
+      button(onclick="loadMsgs()", class="input hoverable") Reload messages
+      p
+      div(id="msgcn", class="scrollable", style="")
+      p
+      p(class="text") Channel:
+      select(id='chn', onchange="updateArr(); updateHeader()", class="input hoverable")
+        each chn in chns
+          option(value=chn) #{chn}
+      p
+      textarea(id="msgin", class="input", rows=5, cols=50, placeholder="Type a message here", style="padding-left:7px;border-left:2px solid rgb(163,166,232);border-top: transparent;color: rgb(163,166,232);border-right: transparent;border-bottom: transparent; background: transparent;")
 
-      socket.on('id', (id) => {
-        if(!clientID) {
-          clientID = id;
-          updateArr();
-          loadMsgs();
-        }
-      });
-      
-      socket.on("senderr", (e) => {
-        messageContainer.classList.add("errorShake");
-      });
+      button(onclick="sendMsg()", class="send-button hoverable", style="outline:none; border:0px; background:transparent;")
+        img(src="https://cdn.glitch.com/3ebdc662-0a1e-4e5b-a129-4e6528173744%2F3ebdc662-0a1e-4e5b-a129-4e6528173744%252Fsend-message-icon-png-10.png?v=1606765543624")
+      p
+      script(src="/socket.io/socket.io.js")
 
-      socket.on('messagePackage', async (data) => {
-          if ((data.channel !== channel.value)) return;
-          
-          if (data.mode === "all") {
-            while (progressbar.value < progressbar.max) {
-                progressbar.value += (progressbar.max/10);
-                await sleep(75);
-            }
+      script.
+        const socket = io();
+        const server = "#{ser}";
+        const channel = document.querySelector('body > select[id="chn"]');
+        const pass = document.querySelector('body > input[id="pass"]');
+        const dropdown = document.querySelector("body > select"); 
+        const messages = document.querySelector('body > div[id="msgcn"]');
+        const messageContainer = document.querySelector('body > textarea[id="msgin"]');
+        const idContainer = "#{id}";
+        let progressbar;
+        let loadMoreButton;
+        let loadMoreSpinner;
+        let clientID;
 
-            while (messages.firstChild) {
-                messages.removeChild(messages.firstChild);
-            }
+        socket.on('id', (id) => {
+          if(!clientID) {
+            clientID = id;
+            updateArr();
+            loadMsgs();
           }
+        });
 
-          if(data.messages.length <= 0) {
+        socket.on("senderr", (e) => {
+          messageContainer.classList.add("errorShake");
+        });
+
+        socket.on('messagePackage', async (data) => {
+            if ((data.channel !== channel.value)) return;
+
+            if (data.mode === "all") {
+              while (progressbar.value < progressbar.max) {
+                  progressbar.value += (progressbar.max/10);
+                  await sleep(75);
+              }
+
+              while (messages.firstChild) {
+                  messages.removeChild(messages.firstChild);
+              }
+            }
+
+            if(data.messages.length <= 0) {
+                let p = document.createElement("p");
+                p.innerText = "This is the start of the channel!";
+                p.style.fontWeight = "bold";
+                p.classList.add("text");
+                p.style.color = "rgb(163,166,232)";
+                messages.appendChild(p);
+                if (loadMoreSpinner) loadMoreSpinner.remove();
+                loadMoreButton.remove();
+                return;
+            }
+
+            for(x of data.messages) {
               let p = document.createElement("p");
-              p.innerText = "This is the start of the channel!";
-              p.style.fontWeight = "bold";
+              let msgInfo = document.createElement("strong");
+              p.innerText = x[0][2];
+              msgInfo.innerText = x[0][0] + `, ${new Date(x[0][1]).toLocaleDateString()}, ${new Date(x[0][1]).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}` + ':';
               p.classList.add("text");
-              p.style.color = "rgb(163,166,232)";
-              messages.appendChild(p);
-              if (loadMoreSpinner) loadMoreSpinner.remove();
-              loadMoreButton.remove();
-              return;
-          }
+              p.id = x[0][3];
+              msgInfo.classList.add("text");
 
-          for(x of data.messages) {
-            let p = document.createElement("p");
-            let msgInfo = document.createElement("strong");
-            p.innerText = x[0][2];
-            msgInfo.innerText = x[0][0] + `, ${new Date(x[0][1]).toLocaleDateString()}, ${new Date(x[0][1]).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}` + ':';
-            p.classList.add("text");
-            p.id = x[0][3];
-            msgInfo.classList.add("text");
-            
-            if (data.mode === "newMsg") {
-                messages.insertBefore(msgInfo, messages.firstChild);
-                messages.insertBefore(p, messages.firstChild);
-                messages.insertBefore(document.createElement("br"), messages.firstChild);
-            }
+              if (data.mode === "newMsg") {
+                  messages.insertBefore(msgInfo, messages.firstChild);
+                  messages.insertBefore(p, messages.firstChild);
+                  messages.insertBefore(document.createElement("br"), messages.firstChild);
+              }
 
-            if ((x[1].length > 0)) {
-              for(y of x[1]) {
-                const blob = new Blob([y[1]], {type:y[0]});
-                console.log(blob);
-                const ourl = URL.createObjectURL(blob);
-                switch((y[0].split('/'))[0]) {
-                  case "image":           
-                    const image = document.createElement("img");
-                    image.style.borderRadius = "10px";
-                    image.loading = "lazy";
-                    image.style.display = "flex";
-                    image.style.alignSelf = "flex-start";
-                    image.style.maxWidth = "30%";
-                    image.style.maxHeight = "1000px";
-                    image.src = ourl;
-                    const link = document.createElement("a");
-                    link.style.fontWeight = "bold";
-                    link.style.fontSize = "15px";
-                    link.setAttribute("href", ourl);
-                    link.innerText = "Click to view original image";
-                    link.classList.add("text");
-                    link.target = "_blank";
-                    link.style.color = "rgb(163,166,232)";
-                    if (data.mode === "all" || data.mode === "before") {
-                      messages.appendChild(document.createElement("br"));
-                      messages.appendChild(link);
-                      messages.appendChild(document.createElement("br"));
-                      messages.appendChild(image);
-                    } else if (data.mode === "newMsg") {
-                      messages.insertBefore(image, messages.firstChild);
-                      messages.insertBefore(document.createElement("br"), messages.firstChild);
-                      messages.insertBefore(link, messages.firstChild);
-                      messages.insertBefore(document.createElement("br"), messages.firstChild);
-                    }
-                    break;
-                  case "video":
-                    const v = document.createElement("video");
-                    v.setAttribute("src", ourl);
-                    v.setAttribute("controls", true);
-                    v.loading = "lazy";
-                    v.style.maxWidth = "30%";
-                    v.style.maxHeight = "1000px";
-                    v.style.borderRadius = "10px";
-                    const myVideo = document.createElement("a");
-                    myVideo.setAttribute("href", ourl);
-                    myVideo.innerText = "Click to view original video";
-                    myVideo.style.fontWeight = "bold";
-                    myVideo.classList.add("text");
-                    myVideo.style.color = "rgb(163,166,232)";
-                    myVideo.target = "_blank";
-                    if (data.mode === "all" || data.mode === "before") {
-                      messages.appendChild(document.createElement("br"));
-                      messages.appendChild(myVideo);
-                      messages.appendChild(document.createElement("br"));
-                      messages.appendChild(v);
-                    } else if (data.mode === "newMsg") {
-                      messages.insertBefore(v, messages.firstChild);
-                      messages.insertBefore(document.createElement("br"), messages.firstChild);
-                      messages.insertBefore(myVideo, messages.firstChild);
-                      messages.insertBefore(document.createElement("br"), messages.firstChild);
-                    }
-                    break;
+              if ((x[1].length > 0)) {
+                for(y of x[1]) {
+                  const blob = new Blob([y[1]], {type:y[0]});
+                  console.log(blob);
+                  const ourl = URL.createObjectURL(blob);
+                  switch((y[0].split('/'))[0]) {
+                    case "image":           
+                      const image = document.createElement("img");
+                      image.style.borderRadius = "10px";
+                      image.loading = "lazy";
+                      image.style.display = "flex";
+                      image.style.alignSelf = "flex-start";
+                      image.style.maxWidth = "30%";
+                      image.style.maxHeight = "1000px";
+                      image.src = ourl;
+                      const link = document.createElement("a");
+                      link.style.fontWeight = "bold";
+                      link.style.fontSize = "15px";
+                      link.setAttribute("href", ourl);
+                      link.innerText = "Click to view original image";
+                      link.classList.add("text");
+                      link.target = "_blank";
+                      link.style.color = "rgb(163,166,232)";
+                      if (data.mode === "all" || data.mode === "before") {
+                        messages.appendChild(document.createElement("br"));
+                        messages.appendChild(link);
+                        messages.appendChild(document.createElement("br"));
+                        messages.appendChild(image);
+                      } else if (data.mode === "newMsg") {
+                        messages.insertBefore(image, messages.firstChild);
+                        messages.insertBefore(document.createElement("br"), messages.firstChild);
+                        messages.insertBefore(link, messages.firstChild);
+                        messages.insertBefore(document.createElement("br"), messages.firstChild);
+                      }
+                      break;
+                    case "video":
+                      const v = document.createElement("video");
+                      v.setAttribute("src", ourl);
+                      v.setAttribute("controls", true);
+                      v.loading = "lazy";
+                      v.style.maxWidth = "30%";
+                      v.style.maxHeight = "1000px";
+                      v.style.borderRadius = "10px";
+                      const myVideo = document.createElement("a");
+                      myVideo.setAttribute("href", ourl);
+                      myVideo.innerText = "Click to view original video";
+                      myVideo.style.fontWeight = "bold";
+                      myVideo.classList.add("text");
+                      myVideo.style.color = "rgb(163,166,232)";
+                      myVideo.target = "_blank";
+                      if (data.mode === "all" || data.mode === "before") {
+                        messages.appendChild(document.createElement("br"));
+                        messages.appendChild(myVideo);
+                        messages.appendChild(document.createElement("br"));
+                        messages.appendChild(v);
+                      } else if (data.mode === "newMsg") {
+                        messages.insertBefore(v, messages.firstChild);
+                        messages.insertBefore(document.createElement("br"), messages.firstChild);
+                        messages.insertBefore(myVideo, messages.firstChild);
+                        messages.insertBefore(document.createElement("br"), messages.firstChild);
+                      }
+                      break;
+                  }
                 }
+              }
+              if (data.mode === "all" || data.mode === "before") {
+                  messages.appendChild(document.createElement("br"));
+                  messages.appendChild(p);
+                  messages.appendChild(msgInfo);
               }
             }
             if (data.mode === "all" || data.mode === "before") {
-                messages.appendChild(document.createElement("br"));
-                messages.appendChild(p);
-                messages.appendChild(msgInfo);
+                if (data.mode === "before") loadMoreSpinner.remove();
+                loadmoreButton = document.createElement("button");
+                loadmoreButton.classList.add("input");
+                loadmoreButton.classList.add("hoverable");
+                loadmoreButton.textContent = "Load more messages";
+                loadmoreButton.setAttribute('onclick', "loadMor()");
+                messages.appendChild(loadmoreButton);
+                updateHeader();
             }
+        });
+
+        function back() {
+          fader.classList.add("fade-in");
+          window.location.replace("https://scandium.herokuapp.com/");
+        }
+
+        function loadMsgs() {
+          const data = {
+            server: server,
+            channel: channel.value,
+            mode: "all"
           }
-          if (data.mode === "all" || data.mode === "before") {
-              if (data.mode === "before") loadMoreSpinner.remove();
-              loadmoreButton = document.createElement("button");
-              loadmoreButton.classList.add("input");
-              loadmoreButton.classList.add("hoverable");
-              loadmoreButton.textContent = "Load more messages";
-              loadmoreButton.setAttribute('onclick', "loadMor()");
-              messages.appendChild(loadmoreButton);
-              updateHeader();
+          while (messages.firstChild) {
+              messages.removeChild(messages.firstChild);
           }
-      });
-      
-      function back() {
-        fader.classList.add("fade-in");
-        window.location.replace("https://scandium.herokuapp.com/");
-      }
-
-      function loadMsgs() {
-        const data = {
-          server: server,
-          channel: channel.value,
-          mode: "all"
-        }
-        while (messages.firstChild) {
-            messages.removeChild(messages.firstChild);
-        }
-        const loading = document.createElement("progress");
-        loading.style.alignSelf = "center";
-        loading.max = 1000;
-        loading.value = 0;
-        progressbar = loading;
-        messages.appendChild(loading);
-        socket.emit('loadMsgs', data);
-        loadBar();
-      }
-      
-      function loadMor() {
-        loadmoreButton.remove();
-        loadMoreSpinner = document.createElement("img");
-        loadMoreSpinner.src = "https://cdn.glitch.com/3ebdc662-0a1e-4e5b-a129-4e6528173744%2Fcd514331234507.564a1d2324e4e.gif?v=1605558267665";
-        loadMoreSpinner.style.maxWidth = "7%";
-        loadMoreSpinner.style.maxHeight = "auto";
-        loadMoreSpinner.style.alignSelf = "center";
-        messages.appendChild(loadMoreSpinner);
-        loadMoreSpinner.scrollIntoView({behavior: "smooth", block: "center"});
-        
-        const data = {
-          server: server,
-          channel: channel.value,
-          mode: "before",
-          before: messages.lastChild.previousElementSibling.previousElementSibling.id
-        }
-        console.log(data.before); 
-        socket.emit('loadMor', data);
-      }
-      
-      function sleep(ms) {
-          return new Promise((resolve) => {
-              setTimeout(resolve, ms);
-          });
-      }
-
-      function updateHeader() {
-        document.querySelector('body > text').textContent = `Messages: ${server} > ${channel.value}`;
-      }
-
-      function updateArr() {
-        const c = channel.value;
-        const s = server;
-
-        const data = {
-          channel: c,
-          server: s,
-          ID: clientID
+          const loading = document.createElement("progress");
+          loading.style.alignSelf = "center";
+          loading.max = 1000;
+          loading.value = 0;
+          progressbar = loading;
+          messages.appendChild(loading);
+          socket.emit('loadMsgs', data);
+          loadBar();
         }
 
-        oldC = c;
+        function loadMor() {
+          loadmoreButton.remove();
+          loadMoreSpinner = document.createElement("img");
+          loadMoreSpinner.src = "https://cdn.glitch.com/3ebdc662-0a1e-4e5b-a129-4e6528173744%2Fcd514331234507.564a1d2324e4e.gif?v=1605558267665";
+          loadMoreSpinner.style.maxWidth = "7%";
+          loadMoreSpinner.style.maxHeight = "auto";
+          loadMoreSpinner.style.alignSelf = "center";
+          messages.appendChild(loadMoreSpinner);
+          loadMoreSpinner.scrollIntoView({behavior: "smooth", block: "center"});
 
-        socket.emit('updateArr', data);
-        loadMsgs();
-      }    
-
-      function sendMsg() {
-        if (messageContainer.value === '') {
-          return messageContainer.classList.add("errorShake");
+          const data = {
+            server: server,
+            channel: channel.value,
+            mode: "before",
+            before: messages.lastChild.previousElementSibling.previousElementSibling.id
+          }
+          console.log(data.before); 
+          socket.emit('loadMor', data);
         }
-        
-        const data = {
-          content: messageContainer.value,
-          server: server,
-          channel: channel.value,
-          userID: idContainer
+
+        function sleep(ms) {
+            return new Promise((resolve) => {
+                setTimeout(resolve, ms);
+            });
         }
 
-        socket.emit('sendMessage', data);
+        function updateHeader() {
+          document.querySelector('body > text').textContent = `Messages: ${server} > ${channel.value}`;
+        }
 
-        messageContainer.value = '';
-      }
-      
-      function loadBar() {
-          const load = setInterval(function() {
-            if (progressbar.value >= progressbar.max*.90) {clearInterval(load);}
-            progressbar.value += Math.floor(Math.random() * (30));
-          }, Math.floor((Math.random() * (2000))) + 700);        
-      }
+        function updateArr() {
+          const c = channel.value;
+          const s = server;
 
-      window.addEventListener("beforeunload", function(evt) {
-          oldC = channel.value;
-          channel.value = "";
-          updateArr();
-      });
-      
-      messageContainer.addEventListener("webkitAnimationEnd", function(e) {
-          e.target.classList.remove("errorShake");
-      });
+          const data = {
+            channel: c,
+            server: s,
+            ID: clientID
+          }
+
+          oldC = c;
+
+          socket.emit('updateArr', data);
+          loadMsgs();
+        }    
+
+        function sendMsg() {
+          if (messageContainer.value === '') {
+            return messageContainer.classList.add("errorShake");
+          }
+
+          const data = {
+            content: messageContainer.value,
+            server: server,
+            channel: channel.value,
+            userID: idContainer
+          }
+
+          socket.emit('sendMessage', data);
+
+          messageContainer.value = '';
+        }
+
+        function loadBar() {
+            const load = setInterval(function() {
+              if (progressbar.value >= progressbar.max*.90) {clearInterval(load);}
+              progressbar.value += Math.floor(Math.random() * (30));
+            }, Math.floor((Math.random() * (2000))) + 700);        
+        }
+
+        window.addEventListener("beforeunload", function(evt) {
+            oldC = channel.value;
+            channel.value = "";
+            updateArr();
+        });
+
+        messageContainer.addEventListener("webkitAnimationEnd", function(e) {
+            e.target.classList.remove("errorShake");
+        });
 
