@@ -248,6 +248,7 @@ html
               let msgInfo = document.createElement("strong");
               p.innerText = x[0][2];
               msgInfo.innerText = x[0][0] + `, ${new Date(x[0][1]).toLocaleDateString()}, ${new Date(x[0][1]).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}` + ':';
+              msgInfo.style.color = "rgb(163,166,232)";
               p.classList.add("text");
               p.id = x[0][3];
               msgInfo.classList.add("text");
