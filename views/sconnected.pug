@@ -333,7 +333,7 @@ html
                 if (data.mode === "before") loadMoreSpinner.remove();
                 loadmoreButton = document.createElement("input");
                 loadmoreButton.classList.add("hoverable");
-                loadmoreButton.style.maxHeight = "3px";
+                loadmoreButton.style.background = "transparent;
                 loadmoreButton.textContent = "Load more messages";
                 loadmoreButton.setAttribute('onclick', "loadMor()");
                 messages.appendChild(loadmoreButton);
@@ -359,6 +359,7 @@ html
           loading.style.alignSelf = "center";
           loading.max = 1000;
           loading.value = 0;
+          loading.style.color = "rgb(163,166,232)";
           progressbar = loading;
           messages.appendChild(loading);
           socket.emit('loadMsgs', data);
@@ -373,7 +374,7 @@ html
           loadMoreSpinner.style.maxHeight = "auto";
           loadMoreSpinner.style.alignSelf = "center";
           messages.appendChild(loadMoreSpinner);
-          loadMoreSpinner.scrollIntoView({behavior: "smooth", block: "center"});
+          loadMoreSpinner.window.scrollTo({top: 0, behavior: 'smooth'});
 
           const data = {
             server: server,
