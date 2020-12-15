@@ -15,7 +15,7 @@ html
        }
        #content {
           margin-left: 45vh;
-          margin-top: 10vh;
+          margin-top: 3vh;
           margin-bottom: auto;
           margin-right: auto;
        }
@@ -331,9 +331,9 @@ html
             }
             if (data.mode === "all" || data.mode === "before") {
                 if (data.mode === "before") loadMoreSpinner.remove();
-                loadmoreButton = document.createElement("button");
-                loadmoreButton.classList.add("input");
+                loadmoreButton = document.createElement("strong");
                 loadmoreButton.classList.add("hoverable");
+                loadmorButton.style.color = "rgb(163,166,232)";
                 loadmoreButton.textContent = "Load more messages";
                 loadmoreButton.setAttribute('onclick', "loadMor()");
                 messages.appendChild(loadmoreButton);
