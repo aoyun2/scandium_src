@@ -42,7 +42,7 @@ module.exports.run = async (bot, message, args) => {
      const exampleEmbed2 = new Discord.RichEmbed()
         .setColor('#A3A6E8')
         .setTitle("Success!")
-        .setDescription(`You can now login [here](https://scandium.glitch.me/) with the credentials:\nUsername: \`${message.author.username}\`\n\`Password: ${pass}\``);
+        .setDescription(`You can now login [here](https://scandium.herokuapp.com/) with the credentials:\nUsername: \`${message.author.username}\`\n\`Password: ${pass}\``);
      await message.reply("Check your DMs :mailbox_with_mail:")
      await message.author.send(exampleEmbed2);
 }
