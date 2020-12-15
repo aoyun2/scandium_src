@@ -331,9 +331,10 @@ html
             }
             if (data.mode === "all" || data.mode === "before") {
                 if (data.mode === "before") loadMoreSpinner.remove();
-                loadmoreButton = document.createElement("button");
+                loadmoreButton = document.createElement("strong");
                 loadmoreButton.classList.add("hoverable");
-                loadmoreButton.style.background = "transparent";
+                loadmoreButton.style.fontFamily = "Muli";
+                loadmoreButton.style.color = "rgb(163,166,232)";
                 loadmoreButton.textContent = "Load more messages";
                 loadmoreButton.setAttribute('onclick', "loadMor()");
                 messages.appendChild(loadmoreButton);
@@ -374,7 +375,7 @@ html
           loadMoreSpinner.style.maxHeight = "auto";
           loadMoreSpinner.style.alignSelf = "center";
           messages.appendChild(loadMoreSpinner);
-          loadMoreSpinner.window.scrollTo({top: 0, behavior: 'smooth'});
+          loadMoreSpinner.scrollTo({top: 0, behavior: 'smooth'});
 
           const data = {
             server: server,
