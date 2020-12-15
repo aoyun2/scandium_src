@@ -331,9 +331,9 @@ html
             }
             if (data.mode === "all" || data.mode === "before") {
                 if (data.mode === "before") loadMoreSpinner.remove();
-                loadmoreButton = document.createElement("strong");
+                loadmoreButton = document.createElement("input");
                 loadmoreButton.classList.add("hoverable");
-                loadmoreButton.style.color = "rgb(163,166,232)";
+                loadmoreButton.style.maxHeight = "3px";
                 loadmoreButton.textContent = "Load more messages";
                 loadmoreButton.setAttribute('onclick', "loadMor()");
                 messages.appendChild(loadmoreButton);
