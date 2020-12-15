@@ -40,7 +40,8 @@ html
             transition: background-color 5000s ease-in-out 0s;
         }
         .scrollable {
-          max-width: 1000px;
+          max-width: 100vw;
+          min-width: 100vw;
           max-height: 500px;
           overflow: scroll;
           display: flex;
@@ -328,7 +329,7 @@ html
             }
             if (data.mode === "all" || data.mode === "before") {
                 if (data.mode === "before") loadMoreSpinner.remove();
-                loadmoreButton = document.createElement("strong");
+                loadmoreButton = document.createElement("text");
                 loadmoreButton.classList.add("hoverable");
                 loadmoreButton.style.fontFamily = "Muli";
                 loadmoreButton.style.color = "#301934";
