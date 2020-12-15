@@ -376,7 +376,7 @@ html
           loadMoreSpinner.style.maxHeight = "auto";
           loadMoreSpinner.style.alignSelf = "center";
           messages.appendChild(loadMoreSpinner);
-          messages.scrollTop = messages.scrollHeight;
+          messages.scrollTop = messages.scrollHeight - messages.clientHeight;
 
           const data = {
             server: server,
