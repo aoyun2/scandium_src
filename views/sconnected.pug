@@ -15,7 +15,7 @@ html
        }
        #content {
           margin-left: 45vh;
-          margin-top: auto;
+          margin-top: margin-bottom;
           margin-bottom: auto;
           margin-right: auto;
        }
@@ -183,7 +183,7 @@ html
         each chn in chns
           option(value=chn) #{chn}
       p
-      textarea(id="msgin", class="input", rows=5, cols=50, placeholder="Type a message here", style="padding-left:7px;border-left:2px solid rgb(163,166,232);border-top: transparent;color: rgb(163,166,232);border-right: transparent;border-bottom: transparent; background: transparent;")
+      textarea(id="msgin", class="input", rows=5, cols=50, placeholder="Type a message here", style="border-radius:0px;padding-left:7px;border-left:2px solid rgb(163,166,232);border-top: transparent;color: rgb(163,166,232);border-right: transparent;border-bottom: transparent; background: transparent;")
 
       button(onclick="sendMsg()", class="send-button hoverable", style="outline:none; border:0px; background:transparent;")
         img(src="https://cdn.glitch.com/3ebdc662-0a1e-4e5b-a129-4e6528173744%2F3ebdc662-0a1e-4e5b-a129-4e6528173744%252Fsend-message-icon-png-10.png?v=1606765543624")
