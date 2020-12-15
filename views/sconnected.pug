@@ -83,11 +83,11 @@ html
         progress {
           -webkit-appearance: none;
           height: 10px;
-          border: 1px solid white;
+          border: 1px solid #301934;
           border-radius: 5px;
         }
         ::-webkit-progress-bar {
-          background-color: transparent;
+          background-color: rgb(163,166,232);
           border-radius: 5px;
         }
         ::-webkit-progress-value {
@@ -335,6 +335,7 @@ html
                 loadmoreButton.style.color = "#301934";
                 loadmoreButton.style.background = "rgb(163,166,232)";
                 loadmoreButton.style.borderRadius = "5px";
+                loadmoreButton.style.padding = "2px";
                 loadmoreButton.textContent = "Load more messages";
                 loadmoreButton.setAttribute('onclick', "loadMor()");
                 messages.appendChild(loadmoreButton);
@@ -360,7 +361,6 @@ html
           loading.style.alignSelf = "center";
           loading.max = 1000;
           loading.value = 0;
-          loading.style.color = "rgb(163,166,232)";
           progressbar = loading;
           messages.appendChild(loading);
           socket.emit('loadMsgs', data);
