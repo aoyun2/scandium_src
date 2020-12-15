@@ -14,10 +14,7 @@ html
           overflow: hidden;
        }
        #content {
-          margin-left: 45vh;
-          margin-top: 3vh;
-          margin-bottom: auto;
-          margin-right: auto;
+          margin: auto;
        }
        span + span {
            margin-left: 20px;
@@ -334,7 +331,9 @@ html
                 loadmoreButton = document.createElement("strong");
                 loadmoreButton.classList.add("hoverable");
                 loadmoreButton.style.fontFamily = "Muli";
-                loadmoreButton.style.color = "rgb(163,166,232)";
+                loadmoreButton.style.color = "#301934";
+                loadmoreButton.style.background = "rgb(163,166,232)";
+                loadmoreButton.style.borderRadius = "5px";
                 loadmoreButton.textContent = "Load more messages";
                 loadmoreButton.setAttribute('onclick', "loadMor()");
                 messages.appendChild(loadmoreButton);
