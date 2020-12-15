@@ -376,7 +376,7 @@ html
           loadMoreSpinner.style.maxHeight = "auto";
           loadMoreSpinner.style.alignSelf = "center";
           messages.appendChild(loadMoreSpinner);
-          loadMoreSpinner.scrollTo({top: 0, behavior: 'smooth'});
+          loadMoreSpinner.animate({scrollTop: '0px'}, 1000);
 
           const data = {
             server: server,
