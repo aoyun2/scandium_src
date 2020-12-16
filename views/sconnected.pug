@@ -39,9 +39,9 @@ html
             transition: background-color 5000s ease-in-out 0s;
         }
         .scrollable {
-          max-width: 100vw;
-          min-width: 100vw;
-          max-height: 500px;
+          max-width: 90vw;
+          min-width: 90vw;
+          max-height: 50vw;
           overflow: scroll;
           display: flex;
           flex-direction: column-reverse;
@@ -175,7 +175,7 @@ html
       span
       button(onclick="loadMsgs()", class="input hoverable") Reload messages
       p
-      div(id="msgcn", class="scrollable", style="max-height: 60vh;")
+      div(id="msgcn", class="scrollable")
       p
       p(class="text") Channel:
       select(id='chn', onchange="updateArr(); updateHeader()", class="input hoverable", style="margin-left:3px")
