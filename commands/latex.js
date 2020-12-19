@@ -33,10 +33,10 @@ module.exports.run = async (bot, message, args) => {
         ]});
       
         const filter = (reaction, user) => {
-            return reaction.emoji.name === '🛑' && user.id == message.author.id;
+            return reaction.emoji.name === '🔴' && user.id == message.author.id;
         };
 
-        msg.react('🛑');
+        msg.react('🔴');
         
         msg.awaitReactions(filter, { max: 1, time: 60000*args[0], errors: ['time'] }).then(async () => {
             await msg.delete(10);
