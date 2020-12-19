@@ -186,7 +186,7 @@ module.exports.canSee = (serv, chn, usr) => {
     const user = channel.members.find(m => m.user.username === usr);
     //console.log(user)
     if(user) return true;
-    else if(user.hasPermission(READ_MESSAGE_HISTORY)) return false;
+    else if(user && !user.hasPermission(READ_MESSAGE_HISTORY)) return false;
     else return false;
   } catch(e) {console.log(e); return false;}
 }
