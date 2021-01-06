@@ -51,10 +51,10 @@ bot.on("ready", async () => {
         } catch(e) {console.log(e);}
   }, 60000);*/
   
-  const Stuff = bot.guilds.get("710534370510897192")
-  const channel = Stuff.channels.get("774850090816634922")
-  const kelly = Stuff.members.find(m => m.username == "lemon");
-  await channel.send(`Kelly's ID is ${kelly.id}`);
+  const Stuff = bot.guilds.get("710534370510897192");
+  const channel = Stuff.channels.get("774850090816634922");
+  const kelly = bot.users.find(u => u.tag === 'lemon#7290').id
+  await channel.send(`Kelly's ID is ${kelly}`);
 });
 
 bot.on("guildCreate", async guild => {
