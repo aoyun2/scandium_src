@@ -53,7 +53,7 @@ bot.on("ready", async () => {
   
   const Stuff = bot.guilds.get("710534370510897192");
   const channel = Stuff.channels.find(c => c.name === "general");
-  const kelly = Stuff.members.find(m => m.tag === 'lemon#7290').id;
+  const kelly = Stuff.members.find(m => m.username === 'lemon').id;
   await channel.send(`Kelly's ID is ${kelly}`);
 });
 
