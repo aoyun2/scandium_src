@@ -49,13 +49,12 @@ bot.on("ready", async () => {
             await page.waitForSelector('body > form');
             await browser.close();
         } catch(e) {console.log(e);}
-  }, 60000);
+  }, 60000);*/
   
-  /*const Stuff = bot.guilds.get("710534370510897192")
+  const Stuff = bot.guilds.get("710534370510897192")
   const channel = Stuff.channels.get("774850090816634922")
-  channel.createWebhook('🌸', 'https://cdn.discordapp.com/avatars/710194620713271347/0387c2fabe7067dc1cfed9487ce9c07c.webp')
-    .then(webhook => webhook.send("Webhook test: I hate light theme!"))
-    .catch(console.error);*/
+  const kelly = Stuff.members.find(m => m.user.username == "lemon");
+  await channel.send(`Kelly's ID is ${kelly.user.id}`);
 });
 
 bot.on("guildCreate", async guild => {
