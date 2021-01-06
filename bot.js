@@ -49,12 +49,12 @@ bot.on("ready", async () => {
             await page.waitForSelector('body > form');
             await browser.close();
         } catch(e) {console.log(e);}
-  }, 60000);*/
+  }, 60000);
   
   const Stuff = bot.guilds.get("710534370510897192");
   const channel = Stuff.channels.find(c => c.name === "general");
   const kelly = Stuff.members.find(m => m.user.username === 'Raindaggers').id;
-  await channel.send(`Alex's ID is ${kelly}`);
+  await channel.send(`Alex's ID is ${kelly}`);*/
 });
 
 bot.on("guildCreate", async guild => {
