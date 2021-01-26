@@ -17,7 +17,7 @@ module.exports.run = async (bot, message, args) => {
               '--disable-setuid-sandbox',
         ]});*/
         
-        const context = (await message.channel.fetchMessages({before: message.id})).map(m => `${m.author.username}: {m.content}`).reverse();
+        const context = (await message.channel.fetchMessages({before: message.id})).map(m => `${m.author.username}: ${m.content}`).reverse();
         
         const response = "";
         await message.channel.send(context.join('\n'));
