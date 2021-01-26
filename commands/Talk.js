@@ -10,7 +10,7 @@ module.exports.run = async (bot, message, args) => {
           return await message.channel.send(exampleEmbed2);
         }
       
-        const context = (await message.channel.fetchMessages({before: message.id})).filter(m => m.content.includes("<>talk") || (message.author.id === bot.user.id)).map(m => m.content)).reverse();
+        const context = (await message.channel.fetchMessages({before: message.id})).filter(m => m.content.includes("<>talk") || (message.author.id === bot.user.id)).map(m => m.content).reverse();
         const response = await cb(args[0], context);
         await message.channel.send(response);
     }
