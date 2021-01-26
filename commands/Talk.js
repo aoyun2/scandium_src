@@ -1,5 +1,6 @@
 const Discord = module.require("discord.js");
-const cb = require("cleverbot-free");
+//const cb = require("cleverbot-free");
+const puppeteer = require("puppeteer");
 
 module.exports.run = async (bot, message, args) => {
     try {       
@@ -9,10 +10,17 @@ module.exports.run = async (bot, message, args) => {
             .setTitle(`Invalid command structure.`);
           return await message.channel.send(exampleEmbed2);
         }
-      
-        const context = (await message.channel.fetchMessages({before: message.id})).filter(m => m.content.includes("<>talk") || (message.author.id === bot.user.id)).map(m => m.content).reverse();
-        const response = await cb(args[0], context);
-        await message.channel.send(response);
+        
+        const browser = await puppeteer.launch({
+          args: [
+              '--no-sandbox',
+              '--disable-setuid-sandbox',
+        ]});
+        
+        const context = (await message.channel.fetchMessages({before: message.id})).map(m => `${m.author.username}: {m.content}).reverse();
+        
+        const response = "";
+        await message.channel.send(context.join('\n'));
     }
     catch(e) {
       console.log(e.stack);
