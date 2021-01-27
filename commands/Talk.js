@@ -51,6 +51,7 @@ module.exports.run = async (bot, message, args) => {
         });
         
         clearInterval(ResponseID);
+        await browser.close();
     }
     catch(e) {
       console.log(e.stack);
