@@ -33,20 +33,20 @@ module.exports.run = async (bot, message, args) => {
         
         let response = await message.channel.send("Please Wait...");
         
-        const responseText = await page.$x('//*[@id="gtext"]/text()')[0];
+        const responseText = (await page.$x('//*[@id="gtext"]/text()'))[0].getProperty('textContent');
         
         async function monitorResponse () {
-          const newVal = await page.$x('//*[@id="gtext"]/text()')[0];
+          const newVal = (await page.$x('//*[@id="gtext"]/text()'))[0].getProperty('textContent');
           if (newVal !== responseText) {
-            let newText = newVal.getProperty('textContent')  
-            await response.edit(newText);
+            await response.edit(newVal);
             responseText = newVal;
           }
         }
         
-        let ResponseID = setInterval(async () => { await monitorResponse() }, 2000);
+        let ResponseID = setInterval(async () => { await monitorResponse() }, 1000);
         await page.waitForSelector('#more_button', {
           visible: true,
+          timeout: 99999999
         });
         
         clearInterval(ResponseID);
