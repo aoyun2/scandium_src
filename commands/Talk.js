@@ -36,7 +36,7 @@ module.exports.run = async (bot, message, args) => {
         let responseText = '';
         
         async function monitorResponse () {
-          const newVal = (await page.evaluate(() => document.querySelector('#gtext').textContent)).replace(context, '').replace(message.content, '').split('\n');
+          const newVal = (await page.evaluate(() => document.querySelector('#gtext').textContent)).replace(context, '').replace(message.content, '').split('\n')[1].replace("Scandium: ", '');
           console.log(newVal);
           if (newVal !== responseText) {
             await response.edit(newVal);
