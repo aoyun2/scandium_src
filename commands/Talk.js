@@ -27,6 +27,8 @@ module.exports.run = async (bot, message, args) => {
             { waitUntil: "networkidle0" }
         );
         
+        await page.select("#model", "1558M");
+        
         await page.evaluate((text) => {
             document.querySelector('#input_text').value = text;
         }, context.concat("\nScandium: "));
