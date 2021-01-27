@@ -11,9 +11,9 @@ module.exports.run = async (bot, message, args) => {
           return await message.channel.send(exampleEmbed2);
         }
         
-        let response = await message.channel.send("Please Wait...");
-        
         const context = (await message.channel.fetchMessages({before: message.id})).map(m => `${m.author.username}: ${m.content.replace("<>talk", '')}`).reverse().join('\n');
+        
+        let response = await message.channel.send("Please Wait...");
         
         const browser = await puppeteer.launch({
           args: [
