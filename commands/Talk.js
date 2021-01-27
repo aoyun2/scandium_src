@@ -33,10 +33,10 @@ module.exports.run = async (bot, message, args) => {
         
         let response = await message.channel.send("Please Wait...");
         
-        const responseText = await page.evaluate(() => document.querySelector('#gtext').innerHTML);
+        let responseText = await page.evaluate(() => document.querySelector('#gtext').textContent);
         
         async function monitorResponse () {
-          const newVal = await page.evaluate(() => document.querySelector('#gtext').innerHTML);
+          const newVal = await page.evaluate(() => document.querySelector('#gtext').textContent);
           console.log(responseText); console.log(newVal);
           if (newVal !== responseText) {
             await response.edit(newVal);
