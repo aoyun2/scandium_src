@@ -38,13 +38,13 @@ module.exports.run = async (bot, message, args) => {
         async function monitorResponse () {
           const newVal = await page.$x('//*[@id="gtext"]/text()');
           if (newVal !== responseText) {
-            let newText = await page.evaluate(el => el.textContent, newVal);
+            let newText = newVal.getAttribute('textContent')  
             await response.edit(newText);
             responseText = newVal;
           }
         }
         
-        let ResponseID = setInterval(monitorResponse, 2000);
+        let ResponseID = setInterval(async () => { await monitorResponse() }, 2000);
         await page.waitForSelector('#more_button', {
           visible: true,
         });
