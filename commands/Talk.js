@@ -14,7 +14,8 @@ module.exports.run = async (bot, message, args) => {
         const context = message.channel.messages.map(m => `${m.author.username}: ${m.content.replace("<>talk", '')}`).join('\n');
         console.log(context);
         
-        let response = await message.channel.send("Please Wait...");
+        let response = await message.channel.send("Scandium: ");
+        message.channel.startTyping();
         
         const browser = await puppeteer.launch({
           args: [
@@ -55,6 +56,7 @@ module.exports.run = async (bot, message, args) => {
         
         clearInterval(ResponseID);
         await browser.close();
+        message.channel.stopTyping();
     }
     catch(e) {
       console.log(e.stack);
