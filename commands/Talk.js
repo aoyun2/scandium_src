@@ -21,7 +21,7 @@ module.exports.run = async (bot, message, args) => {
         
         const page = await browser.newPage();
         await page.goto('https://bellard.org/textsynth/',
-            {timeout: 10000},
+            {timeout: 9999999},
             { waitUntil: "networkidle0" }
         );
         
