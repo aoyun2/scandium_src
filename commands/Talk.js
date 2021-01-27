@@ -11,7 +11,7 @@ module.exports.run = async (bot, message, args) => {
           return await message.channel.send(exampleEmbed2);
         }
         
-        const context = (await message.channel.fetchMessages({limit: 1000, before: message.id})).map(m => `${m.author.username}: ${m.content.replace("<>talk", '')}`).reverse().join('\n');
+        const context = (await message.channel.fetchMessages({before: message.id})).filter(m => m.content.includes("<>talk") || m.author.id === bot.user.id).map(m => `${m.author.username}: ${m.content.replace("<>talk", '')}`).reverse().join('\n');
         
         let response = await message.channel.send("Please Wait...");
         
