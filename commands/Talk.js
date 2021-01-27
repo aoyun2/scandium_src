@@ -33,10 +33,10 @@ module.exports.run = async (bot, message, args) => {
         
         let response = await message.channel.send("Please Wait...");
         
-        const responseText = await page.$x('//*[@id="gtext"]/text()');
+        const responseText = await page.$x('//*[@id="gtext"]/text()')[0];
         
         async function monitorResponse () {
-          const newVal = await page.$x('//*[@id="gtext"]/text()');
+          const newVal = await page.$x('//*[@id="gtext"]/text()')[0];
           if (newVal !== responseText) {
             let newText = newVal.getProperty('textContent')  
             await response.edit(newText);
