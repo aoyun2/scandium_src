@@ -33,7 +33,7 @@ module.exports.run = async (bot, message, args) => {
         
         await page.waitForSelector('#more_button', {
           visible: true,
-        })
+        });
         
         const responseText = await page.$x("//*[@id="gtext"]/text()");
         
