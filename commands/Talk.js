@@ -35,7 +35,7 @@ module.exports.run = async (bot, message, args) => {
           visible: true,
         });
         
-        const responseText = await page.$x("//*[@id="gtext"]/text()");
+        const responseText = await page.$x('//*[@id="gtext"]/text()');
         
         const response = (await page.evaluate(el => el.textContent, responseText[0])).split("\n")[0];
         await message.channel.send(response);
