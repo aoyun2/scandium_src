@@ -11,6 +11,8 @@ module.exports.run = async (bot, message, args) => {
           return await message.channel.send(exampleEmbed2);
         }
         
+        let response = await message.channel.send("Please Wait...");
+        
         const context = (await message.channel.fetchMessages({before: message.id})).map(m => `${m.author.username}: ${m.content.replace("<>talk", '')}`).reverse().join('\n');
         
         const browser = await puppeteer.launch({
@@ -31,12 +33,10 @@ module.exports.run = async (bot, message, args) => {
         
         await page.click('#submit_button');
         
-        let response = await message.channel.send("Please Wait...");
-        
-        let responseText = await page.evaluate(() => document.querySelector('#gtext').textContent).replace(context, '').split('\n', 1);
+        let responseText = '';
         
         async function monitorResponse () {
-          const newVal = await page.evaluate(() => document.querySelector('#gtext').textContent).replace(context, '').split('\n', 1);
+          const newVal = (await page.evaluate(() => document.querySelector('#gtext').textContent)).replace(context, '').split('\n', 1);
           //console.log(newVal);
           if (newVal !== responseText) {
             await response.edit(newVal);
