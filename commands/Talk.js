@@ -15,7 +15,6 @@ module.exports.run = async (bot, message, args) => {
         console.log(context);
         
         let response = await message.channel.send("Scandium: ");
-        message.channel.startTyping();
         
         const browser = await puppeteer.launch({
           args: [
@@ -40,11 +39,13 @@ module.exports.run = async (bot, message, args) => {
         let responseText = '';
         
         async function monitorResponse () {
+          message.channel.startTyping();
           const newVal = (await page.evaluate(() => document.querySelector('#gtext').textContent)).replace(context, '').replace(message.content, '').split('\n')[1].replace("Scandium: ", '');
           //console.log(newVal);
           if (newVal !== responseText) {
             await response.edit(newVal);
             responseText = newVal;
+            message.channel.stopTyping();
           }
         }
         
@@ -56,7 +57,6 @@ module.exports.run = async (bot, message, args) => {
         
         clearInterval(ResponseID);
         await browser.close();
-        message.channel.stopTyping();
     }
     catch(e) {
       console.log(e.stack);
