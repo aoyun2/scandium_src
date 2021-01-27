@@ -35,7 +35,7 @@ module.exports.run = async (bot, message, args) => {
         
         const responseText = await page.$x('//*[@id="gtext"]/text()');
         
-        function monitorResponse () {
+        async function monitorResponse () {
           const newVal = await page.$x('//*[@id="gtext"]/text()');
           if (newVal !== responseText) {
             let newText = await page.evaluate(el => el.textContent, newVal);
