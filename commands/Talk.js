@@ -11,16 +11,34 @@ module.exports.run = async (bot, message, args) => {
           return await message.channel.send(exampleEmbed2);
         }
         
-        /*const browser = await puppeteer.launch({
+        const context = (await message.channel.fetchMessages({before: message.id})).map(m => `${m.author.username}: ${m.content.replace("<>talk", '')}`).reverse().join('\n');
+        
+        const browser = await puppeteer.launch({
           args: [
               '--no-sandbox',
               '--disable-setuid-sandbox',
-        ]});*/
+        ]});
         
-        const context = (await message.channel.fetchMessages({before: message.id})).map(m => `${m.author.username}: ${m.content}`).reverse();
+        const page = await browser.newPage();
+        await page.goto('https://bellard.org/textsynth/',
+            {timeout: 10000},
+            { waitUntil: "networkidle0" }
+        );
         
-        const response = "";
-        await message.channel.send(context.join('\n'));
+        await page.evaluate((text) => {
+            document.querySelector('#input_text').value = text;
+        }, context.concat("\nScottie: "));
+        
+        await page.click('#submit_button');
+        
+        await page.waitForSelector('#more_button', {
+          visible: true,
+        })
+        
+        const responseText = await page.$x("//*[@id="gtext"]/text()");
+        
+        const response = (await page.evaluate(el => el.textContent, responseText[0])).split("\n")[0];
+        await message.channel.send(response);
     }
     catch(e) {
       console.log(e.stack);
