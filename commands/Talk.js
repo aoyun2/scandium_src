@@ -31,14 +31,25 @@ module.exports.run = async (bot, message, args) => {
         
         await page.click('#submit_button');
         
+        let response = await message.channel.send("Please Wait...");
+        
+        const responseText = await page.$x('//*[@id="gtext"]/text()');
+        
+        function monitorResponse () {
+          const newVal = await page.$x('//*[@id="gtext"]/text()');
+          if (newVal !== responseText) {
+            let newText = await page.evaluate(el => el.textContent, newVal);
+            await response.edit(newText);
+            responseText = newVal;
+          }
+        }
+        
+        let ResponseID = setInterval(monitorResponse, 2000);
         await page.waitForSelector('#more_button', {
           visible: true,
         });
         
-        const responseText = await page.$x('//*[@id="gtext"]/text()');
-        
-        const response = (await page.evaluate(el => el.textContent, responseText[0])).split("\n")[0];
-        await message.channel.send(response);
+        clearInterval(ResponseID);
     }
     catch(e) {
       console.log(e.stack);
