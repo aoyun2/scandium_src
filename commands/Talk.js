@@ -29,14 +29,14 @@ module.exports.run = async (bot, message, args) => {
         
         await page.evaluate((text) => {
             document.querySelector('#input_text').value = text;
-        }, context.concat("\nScottie: "));
+        }, context.concat("\nScandium: "));
         
         await page.click('#submit_button');
         
         let responseText = '';
         
         async function monitorResponse () {
-          const newVal = (await page.evaluate(() => document.querySelector('#gtext').textContent)).replace(context, '').split('\n', 1);
+          const newVal = (await page.evaluate(() => document.querySelector('#gtext').textContent)).replace(context, '').split('\n', 1)[0];
           //console.log(newVal);
           if (newVal !== responseText && newVal !== '') {
             await response.edit(newVal);
