@@ -37,7 +37,7 @@ module.exports.run = async (bot, message, args) => {
         
         async function monitorResponse () {
           const newVal = await page.evaluate(() => document.querySelector('#gtext').textContent);
-          //console.log(responseText); console.log(newVal);
+          console.log(newVal);
           if (newVal !== responseText) {
             await response.edit(newVal.split('\n', 1));
             responseText = newVal;
