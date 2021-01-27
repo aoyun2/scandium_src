@@ -37,6 +37,7 @@ module.exports.run = async (bot, message, args) => {
         
         async function monitorResponse () {
           const newVal = (await page.$('#gtext')).getProperty('textContent');
+          console.log(responseText); console.log(newVal);
           if (newVal !== responseText) {
             await response.edit(newVal);
             responseText = newVal;
