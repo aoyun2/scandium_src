@@ -11,7 +11,8 @@ module.exports.run = async (bot, message, args) => {
           return await message.channel.send(exampleEmbed2);
         }
         
-        const context = (await message.channel.fetchMessages({limit: 10, before: message.id})).map(m => `${m.author.username}: ${m.content.replace("<>talk", '')}`).reverse().join('\n');
+        const context = message.channel.messages.map(m => `${m.author.username}: ${m.content.replace("<>talk", '')}`).join('\n');
+        console.log(context);
         
         let response = await message.channel.send("Please Wait...");
         
@@ -39,7 +40,7 @@ module.exports.run = async (bot, message, args) => {
         
         async function monitorResponse () {
           const newVal = (await page.evaluate(() => document.querySelector('#gtext').textContent)).replace(context, '').replace(message.content, '').split('\n')[1].replace("Scandium: ", '');
-          console.log(newVal);
+          //console.log(newVal);
           if (newVal !== responseText) {
             await response.edit(newVal);
             responseText = newVal;
