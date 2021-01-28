@@ -39,7 +39,7 @@ module.exports.run = async (bot, message, args) => {
         let responseText = '';
         
         async function monitorResponse () {
-          const newVal = (await page.evaluate(() => document.querySelector('#gtext').textContent)).replace(context, '').replace(message.content, '').split('\n')[1];
+          const newVal = (await page.evaluate(() => document.querySelector('#gtext').textContent)).replace(context, '').split('\n')[1].replace("Scandium: ", '');
           console.log(newVal);
           if (newVal !== responseText) {
             message.channel.startTyping();
