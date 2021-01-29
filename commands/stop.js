@@ -26,7 +26,7 @@ module.exports.run = async (bot, message, args) => {
     }
   
     (await bot.commands.get("play")).queues[message.guild.id] = undefined;
-    (await bot.commands.get("play")).timeoutIDs[message.guild.id] = undefined;
+    clearTimeout((await bot.commands.get("play")).timeoutIDs[message.guild.id]);
     await channel.leave();
 }
 
