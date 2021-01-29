@@ -14,7 +14,7 @@ module.exports.run = async (bot, message, args) => {
         const context = message.channel.messages.map(m => `${m.author.username}: ${m.content.replace("<>talk", '')}`).join('\n');
         console.log(context);
         
-        let response = await message.channel.send("Waiting for a response <a:scanloading:804509467680702465>");
+        let response = await message.channel.send(new Discord.RichEmbed().setTitle("Waiting for a response <a:scanloading:804509467680702465>"));
         
         const browser = await puppeteer.launch({
           args: [
