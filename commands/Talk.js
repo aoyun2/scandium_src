@@ -39,8 +39,8 @@ module.exports.run = async (bot, message, args) => {
         let responseText = '';
         
         async function monitorResponse () {
-          const newVal = (await page.evaluate(() => document.querySelector('#gtext').textContent)).replace(context, '').split('\n')[1].replace("Scandium: ", '');
-          if (newVal !== responseText) {
+          const newVal = (await page.evaluate(() => document.querySelector('#gtext').textContent)).replace(context, '').split('\n')[1].replace("Scandium:", '');
+          if (newVal !== responseText && newVal !== '') {
             response.suppressEmbeds(true);
             message.channel.startTyping();
             await response.edit(newVal);
@@ -49,7 +49,7 @@ module.exports.run = async (bot, message, args) => {
           message.channel.stopTyping();
         }
         
-        let ResponseID = setInterval(async () => { await monitorResponse() }, 1000);
+        let ResponseID = setInterval(async () => { await monitorResponse() }, 500);
         await page.waitForSelector('#more_button', {
           visible: true,
           timeout: 99999999
