@@ -41,6 +41,7 @@ module.exports.run = async (bot, message, args) => {
         async function monitorResponse () {
           const newVal = (await page.evaluate(() => document.querySelector('#gtext').textContent)).replace(context, '').split('\n')[1].replace("Scandium: ", '');
           if (newVal !== responseText) {
+            message.suppressEmbeds(true);
             message.channel.startTyping();
             await response.edit(newVal);
             responseText = newVal;
