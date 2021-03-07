@@ -92,7 +92,7 @@ module.exports.run = async (bot, message, args) => {
               if (m.guild.id != message.guild.id) return;
               else if (m.content === `${botSettings.prefix}skip`) {
                 channel = m.channel;
-                await dispatcher.destroy();
+                dispatcher.end();
               }
             });
             
